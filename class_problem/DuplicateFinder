@@ -1,0 +1,24 @@
+public class DuplicateFinder {
+
+    public static String findDuplicateTeam(String[] teamnames) {
+        if (teamnames == null) {
+            return "NO DUPLICATES";
+        }
+
+        for (int i = 0; i < teamnames.length; i++) {
+            for (int j = i + 1; j < teamnames.length; j++) {
+                if (teamnames[i] != null && teamnames[i].equals(teamnames[j])) {
+                    return "DUPLICATE FOUND: " + teamnames[i];
+                }
+            }
+        }
+
+        return "NO DUPLICATES FOUND";
+    }
+
+    public static void main(String[] args) {
+        String[] input1 = {"BYTEFORCE", "CODECRAFTERS", "BYTEFORCE"};
+
+        System.out.println(findDuplicateTeam(input1));
+    }
+}
