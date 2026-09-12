@@ -1,0 +1,27 @@
+class placementrecord{
+    String name;
+    String company;
+    double packageLpa;
+    public placementrecord( String name,String company,double packageLpa){
+        this.name=name;
+        this.company=company;
+        this.packageLpa=packageLpa;
+    }
+    void printrecord(){
+        System.out.println(name+"->"+company+"@"+packageLpa+"LPA");
+    }
+
+    public static void main(String[]args){
+         placementrecord pr1 =new  placementrecord("Ravi","TCS",4.5);
+        pr1.printrecord();
+         placementrecord pr2 =new  placementrecord("Anitha","Zoho",6.2);
+         pr2.printrecord();
+         placementrecord pr3 =new  placementrecord("Karthik","Infosys",4.0);
+         pr3.printrecord();
+        
+        
+        
+    }
+    
+    
+}
