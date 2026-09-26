@@ -1,0 +1,112 @@
+import java.util.*;
+import java.util.regex.*;
+
+abstract class Question {
+    protected String questionText;
+    protected String correctAnswer;
+    protected String studentAnswer;
+    protected int points;
+
+    public Question(String questionText, String correctAnswer, String studentAnswer, int points) {
+        this.questionText = questionText;
+        this.correctAnswer = correctAnswer;
+        this.studentAnswer = studentAnswer;
+        this.points = points;
+    }
+
+    public abstract double evaluate();
+}
+
+class MCQQuestion extends Question {
+    public MCQQuestion(String text, String correct, String student, int points) {
+        super(text, correct, student, points);
+    }
+
+    @Override
+    public double evaluate() {
+        return studentAnswer.equalsIgnoreCase(correctAnswer) ? points : 0.0;
+    }
+}
+
+class TFQuestion extends Question {
+    public TFQuestion(String text, String correct, String student, int points) {
+        super(text, correct, student, points);
+    }
+
+    @Override
+    public double evaluate() {
+        return studentAnswer.equalsIgnoreCase(correctAnswer) ? points : 0.0;
+    }
+}
+
+class EssayQuestion extends Question {
+    public EssayQuestion(String text, String correct, String student, int points) {
+        super(text, correct, student, points);
+    }
+
+    @Override
+    public double evaluate() {
+        String[] keywords = correctAnswer.split(",");
+        int matchCount = 0;
+        String studentAnsLower = studentAnswer.toLowerCase();
+
+        for (String keyword : keywords) {
+            if (studentAnsLower.contains(keyword.trim().toLowerCase())) {
+                matchCount++;
+            }
+        }
+
+        if (matchCount >= 2) return points * 0.75;
+        if (matchCount == 1) return points * 0.50;
+        return 0.0;
+    }
+}
+
+public class GraderSystem {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        if (!scanner.hasNextInt()) return;
+        
+        int n = Integer.parseInt(scanner.nextLine().trim());
+        double totalScore = 0.0;
+
+        for (int i = 0; i < n; i++) {
+            String line = scanner.nextLine().trim();
+            // Regex to parse space-separated items, respecting double quotes
+            List<String> tokens = new ArrayList<>();
+            Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(line);
+            while (m.find()) {
+                tokens.add(m.group(1).replace("\"", ""));
+            }
+
+            if (tokens.size() < 5) continue;
+
+            String type = tokens.get(0).toUpperCase();
+            String text = tokens.get(1);
+            String correct = tokens.get(2);
+            String student = tokens.get(3);
+            int points = Integer.parseInt(tokens.get(4));
+
+            Question q = null;
+            switch (type) {
+                case "MCQ":
+                    q = new MCQQuestion(text, correct, student, points);
+                    break;
+                case "TF":
+                    q = new TFQuestion(text, correct, student, points);
+                    break;
+                case "ESSAY":
+                    q = new EssayQuestion(text, correct, student, points);
+                    break;
+            }
+
+            if (q != null) {
+                double score = q.evaluate();
+                totalScore += score;
+                System.out.printf("%s: %.2f\n", type, score);
+            }
+        }
+        System.out.printf("Total Score: %.2f\n", totalScore);
+        scanner.close();
+    }
+}
