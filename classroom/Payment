@@ -1,0 +1,56 @@
+abstract class Payment{
+    public abstract double calculateAdjustedamount(double amount);
+}
+class cardpayment extends Payment{
+    public double calculateAdjustedamount(double amount){
+    return amount + (amount * 0.02);
+
+}
+}
+class walletpayment extends Payment{
+    public double calculateAdjustedamount(double amount){
+    return amount + (amount * 0.01);
+
+}
+}
+class Banktransferpayment extends Payment{
+    public double calculateAdjustedamount(double amount){
+    return amount;
+}
+}
+public class Main {
+    public static void main(String[] args) {
+        
+        String[] sampledata=  {
+            "CARD","1000",
+            "WALLET","500",
+            "BANKTRANSFER","2000"
+
+        };
+        double grandtotal=0.0;
+        for(int i=0;i<sampledata.length;i+=2){
+            String type = sampledata[i];
+            double amount = Double.parseDouble(sampledata[i+1]);
+        
+        Payment payment =null;
+        if(type.equals("CARD")){
+            payment = new cardpayment();
+            }else if(type.equals("WALLET")){
+            payment=new walletpayment();
+            }else if(type.equals("BANKTRANSFER")){
+            payment=new Banktransferpayment();
+            }
+            if (payment!=null){
+                double Adjustedamount = payment.calculateAdjustedamount(amount);
+                System.out.printf("%s: %.2f\n",type,Adjustedamount);
+                grandtotal +=Adjustedamount;
+            }
+        }
+            System.out.printf("Total %.2f",grandtotal);
+           
+        
+        
+        // Write your code here. Console input is not allowed.
+
+    }
+}
