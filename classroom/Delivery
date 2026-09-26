@@ -1,0 +1,69 @@
+abstract class Delivery{
+    double weight;
+    double distance;
+    Delivery(double weight,double distance){
+        this.weight=weight;
+        this.distance=distance;
+    }
+    abstract double calculatFee();
+
+}
+class Standard extends Delivery{
+    Standard (double weight,double distance){
+        super(weight,distance);
+    }
+    double calculatFee(){
+        return 5 +(0.50 * weight)+(0.10*distance);
+    }
+    }
+    class Express extends Delivery{
+    Express(double weight,double distance){
+        super(weight,distance);
+    }
+    double calculatFee(){
+        return 15 +(1.00 * weight)+(0.45*distance);
+    }
+    }
+    class International extends Delivery{
+        double CustomFee;
+    International(double weight,double distance,double CustomFee){
+        super(weight,distance);
+        this.CustomFee= CustomFee;
+    }
+    double calculatFee(){
+        return 25 +(2.00* weight)+(0.60*distance)+CustomFee;
+    }
+    }
+public class Main {
+    public static void main(String[] args) {
+        String[] sampledata ={
+            "STANDARD 10 50 ",
+            "EXPRESS 5 20 ",
+            "INTERNATIONAL 20 100 30"
+        };
+        double grandtotal=0.0;
+        for(int i=0;i<sampledata.length;i++){
+            String[] parts=sampledata[i].split(" ");
+            String type =parts[0];
+            double weight = Double.parseDouble(parts[1]);
+            double distance = Double.parseDouble(parts[2]);
+            Delivery delivery;
+            if(type.equals("STANDARD")){
+                delivery=new Standard(weight,distance);
+            }else if(type.equals("EXPRESS")){
+                delivery=new Express(weight,distance);
+            }else{
+                double CustomFee= Double.parseDouble(parts[3]);
+                delivery=new International(weight,distance,CustomFee);
+
+            }
+            double fee = delivery.calculatFee();
+            System.out.printf("%s %.2f%n",type,fee);
+            grandtotal+=fee;
+        }
+        System.out.printf("TOTAL %.2f%n:", grandtotal);
+
+        // Write your code here. Console input is not allowed.
+
+    }
+}
