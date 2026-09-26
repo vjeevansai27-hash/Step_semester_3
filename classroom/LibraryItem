@@ -1,0 +1,74 @@
+import java.time.LocalDate;
+class LibraryItem{
+    String title;
+    LibraryItem(String title){
+        this.title=title;
+    }
+    int getBorrowDays(){
+        return 0;
+    }
+}
+class Book extends LibraryItem{
+    Book(String title){
+        super(title);
+    }
+    int getBorrowDays(){
+        return 14;
+    }
+
+
+}
+class DVD extends LibraryItem{
+    DVD(String title){
+        super(title);
+    }
+    int getBorrowDays(){
+        return 7;
+    }
+
+
+}
+class Magazine extends LibraryItem{
+    Magazine(String title){
+        super(title);
+    }
+    int getBorrowDays(){
+        return 3;
+    }
+
+
+}
+
+
+public class Main {
+    public static void main(String[] args) {
+        String [] sampledata = {
+            "BOOK \"1984\"",
+            "DVD \"The Matrix\"",
+            "MAGAZINE \"Forbes Issue 500\"",
+
+        };
+        LocalDate currentDate = LocalDate.of(2023,10,26);
+        for(int i=0;i<sampledata.length;i++){
+        String line = sampledata[i];
+        String[] parts=line.split(" ",2);
+        String type =parts[0];
+        String title=parts[1];
+        title=title.substring(1,title.length()-1);
+        LibraryItem item;
+        if(type.equals("BOOK")){
+            item=new Book(title);
+        }else if(type.equals("DVD")){
+            item=new DVD(title);
+        }else{
+            item=new Magazine(title);
+
+        }
+        LocalDate dueDate = currentDate.plusDays(item.getBorrowDays());
+        System.out.println(title+":"+dueDate);
+        }
+
+        // Write your code here. Console input is not allowed.
+
+    }
+}
